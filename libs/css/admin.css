@@ -1,0 +1,73 @@
+.max-width-50 {
+    max-width: 50% !important;
+}
+
+
+.right-button-margin{
+    margin: 0 0 1em 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: #FAFAFA;
+}
+
+.display {
+    /* margin-top: 550px; */
+     box-shadow: 0 0 10px #BDBDBD;
+     padding: 15px 15px 15px 20px;
+     background-color: #FFFFFF;
+ }
+ 
+ #glavni, #glavni1, #glavni2, #glavni3, #glavni4 {
+    /* margin-top: 550px; */
+     box-shadow: 0 0 10px #BDBDBD;
+     padding: 15px 15px 15px 20px;
+     background-color: #FFFFFF;
+     
+ }
+ 
+ .btn,.btn:active {
+    outline: none !important;
+    box-shadow: 0 0 5px gray;
+ }
+
+.thumb-image {
+    float:left;
+    width: 150px;
+    height: 150px;
+    margin:.6em 1.2em 0 0;
+    position:relative;
+}
+
+.thumb-image .delete-image {
+    position:absolute;
+    top:-10px;
+    right:-10px;
+}
+
+.thumb-wrapper{
+    border:thin solid #999;
+    float:left;
+    width: 150px;
+    height: 150px;
+    margin:.6em 1.2em 0 0;
+    position:relative;
+}
+
+.width-30-percent{ width:30%; }
+.margin-left-1em{ margin:0 1em 0 0; }
+.width-20-em{ width: 20em; }
+.width-13-em{ width: 13em; }
+.margin-zero{ margin:0; }
+.padding-zero{ padding:0; }
+.btn-margin-right{ margin-right:.5em; }
+.margin-bottom-1em{ margin-bottom:1em; }
+.left-margin{ margin:0 .5em 0 0; }
+.delete-image img{ width:25px; }
+.thumb-wrapper img{ width:130px; height:130px; margin:10px; }
+#html-btn { display:none; }
+.delete-pdf{ margin-left:.5em; }
+.delete-pdf img{ width:20px; cursor:pointer; }
+.pdf-item{ padding:0 0 1em 0; }
+

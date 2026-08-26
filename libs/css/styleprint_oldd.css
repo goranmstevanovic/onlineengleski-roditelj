@@ -1,0 +1,71 @@
+@media print {
+    @page { 
+        size: A4; 
+        margin: 0;
+    }
+
+    /* #printHeader { 
+        display: none;  Sakriva ostale zaglavlje na prvoj stranici  
+    } */
+        
+    #printFooter { 
+        position: fixed; 
+        left: 0; 
+        right: 0; 
+        text-align: center; 
+        background-color: #f2f2f2; 
+        padding: 10px; 
+        bottom: 0; 
+    }
+
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
+    }
+    th, td { 
+        border: 1px solid #ddd; 
+        padding: 8px; text-align: left; 
+    }
+    th { 
+        background-color: #f2f2f2; 
+    }
+    
+    #contentToPrint { 
+        padding-top: 120px; /* Prilagodite visinu zaglavlja */
+        padding-bottom: 120px; /* Prilagodite visinu podnožja */
+    }
+
+     /* Prilagodite ostale stilove po potrebi */
+   
+    
+    /* Dodajte stilove koji se primenjuju samo na prvu stranicu */
+    @page:first {
+        #printHeader { 
+            position: fixed; 
+            left: 0; 
+            right: 0; 
+            text-align: center; 
+            background-color: #f2f2f2; 
+            padding: 10px; 
+            /* z-index: 1000;  */
+        }
+           
+        
+        #printFooter { 
+            position: fixed; 
+            left: 0; 
+            right: 0; 
+            text-align: center; 
+            background-color: #f2f2f2; 
+            padding: 10px; 
+            bottom: 0; 
+        }
+
+       
+
+        #contentToPrint { 
+            padding-top: 240px; /* Prilagodite visinu zaglavlja za prvu stranicu */
+            padding-bottom: 240px; /* Prilagodite visinu zaglavlja za prvu stranicu */
+        }
+    }
+}

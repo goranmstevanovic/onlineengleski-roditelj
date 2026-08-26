@@ -1,0 +1,200 @@
+body {
+    font-size: 10px; 
+    /* Postavite željenu veličinu fonta */
+}
+
+#glavna_tabela {
+    width: 100%;
+}
+
+.nevidljiv {
+    display: none !important;
+}
+
+#redni_broj th {
+    width: 25px !important;
+}
+
+#glavna_tabela td {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: center;
+    /* width: fit-content; */
+}
+
+#glavna_tabela th {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: center;
+    /* width: fit-content; */
+}
+
+#glavna_tabela tr.odredjeni_redak td {
+    border-top: 1px solid black;
+}
+
+#tabela11 {
+    border: 1px solid #E6E6E6; 
+    padding: 8px; 
+    text-align: left;
+    width: 100%;
+}
+
+#tabela12 th, #tabela12 td {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: left;
+}
+
+#tabela12 {
+  width: 100%;
+}
+
+#printHeader {
+    height: 200px;
+    text-align: left;
+    background-position: left top;
+}
+
+#headerh {
+    height: 200px;
+    text-align: left;
+    background-position: left top;
+}
+
+#header13 {
+    margin-top: 250px;
+    padding-top: 250px;
+}
+
+#header12 {
+    width: 100%;
+}
+
+#uplatnica {
+    page-break-inside: avoid;
+    border: 1px solid gray;
+    padding: 20px;
+    margin-top: 50px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+/* #tabela_uplatnica td { */
+    /* width: 100%; */
+     /* Osigurajmo da tabela izgleda pravilno u PDF-u */
+/* } */
+
+ #tabela_uplatnica td {
+    /* border: 1px solid gray; Dodajmo granice za ćelije u tabeli da budu konzistentne */
+    border: none;
+    padding: 5px;
+    text-align: left;
+    /* border-collapse: collapse; */
+    height: auto;
+    font-size: 1em; /* Postavite željenu veličinu fonta */
+}
+
+.inner-table-gore, .inner-table-gore {
+    width: 100%;
+}
+
+.inner-table-gore td {
+    width: 33.3%;
+   
+}
+.inner-table-dole td {
+    width: 33.3%;
+    /* border: 1px solid gray;  */
+    border-radius: 10px;
+    /* background-color: blueviolet; */
+   
+}
+
+
+
+
+
+#tabela_potpisi{
+    width: 100%;
+    margin-top: 30px;
+}
+#label_nalog {
+    text-align : right;
+}
+
+#levi_uplatnica {
+    /* width: 70% !important; */
+    width: 50%;
+    /* background-color: lightblue; */
+    
+   
+}
+
+#desni_uplatnica {
+    width: 50% !important;
+}
+
+
+/* #svrha, 
+#primalac{
+    width:100%; 
+    margin-right: 0%; 
+    border: 1px solid gray; 
+    border-radius: 10px; 
+    height: 4em; 
+} */
+
+#platilac , #primalac, #svrha_uplate {
+    width:95%;
+    margin-right: 5%; 
+    
+}
+
+
+#platilac td, #primalac td, #svrha_uplate td{
+    width:100%; 
+    border: 1px solid gray; 
+    border-radius: 10px; 
+    height: 4em; 
+}
+
+/* .platilac,
+.svrha,
+.primalac
+{
+    width: 90%;
+    margin-right: 10%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    min-height: 5em;
+} */
+
+.input-text {
+    width: 90%;
+    margin-right: 10%;
+    border: 5px solid red;
+    border-radius: 3px;
+    min-height: 20em;
+}
+
+/* input {
+    width: 120%;
+    margin-right: 10%;
+    border: 1px solid gray;
+    border-radius: 3px;
+    min-height: 20em;
+} */
+
+.nalog-title {
+    text-align: right;
+    display: block;
+    margin-bottom: 10px;
+    height: 15px; 
+}
+
+
+
+.border-top {
+    border-top: 1px solid gray;
+}

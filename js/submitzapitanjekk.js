@@ -1,0 +1,18 @@
+$(document).ready(function(){  
+	$("#submit").click(function(){
+	var msg = $("#msg").val();
+
+	if(msg==''){
+	alert("Treba nesto napisati u pitanje da bi je pamtili....!!");   	
+	}
+	else{
+	// Returns successful data submission message when the entered information is stored in database.
+	$.post("pitanje_novokk.php",{ msg1:msg},
+				function(data) {
+				alert(data);
+				$('#form')[0].reset(); //To reset form fields
+				});
+		
+		}
+	});
+	});

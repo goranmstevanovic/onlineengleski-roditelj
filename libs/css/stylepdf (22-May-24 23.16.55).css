@@ -1,0 +1,63 @@
+
+body {
+    font-size: 10px; /* Postavite željenu veličinu fonta */
+   
+}
+
+
+table {
+    width:100%;
+    
+}
+
+.nevidljiv  {
+    display : none !important;
+}
+
+#redni_broj th {
+    width: 25px !important;
+}
+
+#glavna_tabela th, #glavna_tabela td {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: right;
+    width: fit-content;
+}
+
+#glavna_tabela tr.odredjeni_redak td {
+    border-top: 1px solid black;
+}
+
+
+#tabela11  {
+    border: 1px solid #E6E6E6; 
+    padding: 8px; 
+    text-align: left;
+}
+
+#tabela12 th, #tabela12 td {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: left;
+}
+
+
+#printHeader {
+    height: 200px;
+    text-align: left;
+    background-position: left top;
+   
+}
+
+#headerh {
+    height: 200px;
+    text-align: left;
+    background-position: left top;
+   
+}
+
+#header13 {
+    margin-top: 250px;
+    padding-top: 250px;
+}

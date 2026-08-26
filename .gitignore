@@ -1,0 +1,64 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Environment & secrets — NIKAD ne ide u repo
+.env
+.env.local
+.env.*.local
+
+# Editor / IDE
+/.history/
+/.idea/
+/.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Server konfiguracija (specifična za host)
+.user.ini
+php.ini
+
+# Logs
+*.log
+error_log
+error.log
+/app/error_log
+
+# User uploads / runtime storage (osetljivi podaci učenika)
+/storage/
+
+# Backup fajlovi sa datumom u zagradi (npr. "objects/uplata (09-Oct-21).php")
+*(*).php
+* (*).php
+
+# Ostali backup / arhive
+*.bak
+*.bak.php
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Lokalni dokumenti — ne idu u repo
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.pptx
+*.ppt
+*.rtf
+
+# Test / junk fajlovi (lokalni eksperimenti)
+proba
+proba.php
+isto1.php
+isto2.php
+isto3.php
+dd
+read.me
+
+# OS / temp
+*~
+.tmp/

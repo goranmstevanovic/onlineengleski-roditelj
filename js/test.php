@@ -1,0 +1,28 @@
+<html>
+<head>
+<script src="jquery-1.11.1.min.js"></script>
+<script>
+function selectChange(val)
+{
+//Set the value of action in action attribute of form element.
+//Submit the form
+$('#myForm').submit();
+}
+</script>
+</head>
+<body>
+<form id="myForm" action="test.php">
+<Select name="proba" onChange=selectChange(this.value)>
+<option value="-1">Select</option>
+<option value="6">kasper </option> 
+<option value="13">adad </option> 
+<option value="14">3204 </option>                   
+</select>
+</form>
+<?php
+echo "uzas";
+echo $_GET["proba"];
+?>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+body {
+    font-size: 10px; /* Postavite željenu veličinu fonta */
+}
+
+#glavna_tabela {
+    width: 100%;
+}
+
+.nevidljiv {
+    display: none !important;
+}
+
+#redni_broj th {
+    width: 25px !important;
+}
+
+#glavna_tabela th, #glavna_tabela td {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: right;
+    width: fit-content;
+}
+
+#glavna_tabela tr.odredjeni_redak td {
+    border-top: 1px solid black;
+}
+
+#tabela11 {
+    border: 1px solid #E6E6E6; 
+    padding: 8px; 
+    text-align: left;
+}
+
+#tabela12 th, #tabela12 td {
+    border: 1px solid #FAFAFA; 
+    padding: 8px; 
+    text-align: left;
+}
+
+#printHeader {
+    height: 200px;
+    text-align: left;
+    background-position: left top;
+}
+
+#headerh {
+    height: 200px;
+    text-align: left;
+    background-position: left top;
+}
+
+#header13 {
+    margin-top: 250px;
+    padding-top: 250px;
+}
+
+#uplatnica {
+    border: 1px solid gray;
+    /* padding: 20px; */
+    margin-top: 50px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+#tabela_uplatnica {
+    width: 100%;
+    border-collapse: collapse; /* Osigurajmo da tabela izgleda pravilno u PDF-u */
+}
+
+#tabela_uplatnica td {
+    border: 1px solid gray; /* Dodajmo granice za ćelije u tabeli da budu konzistentne */
+    padding: 8px;
+    text-align: left;
+}
+
+.levi_uplatnica {
+    width: 50%;
+}
+
+
+
+.nalog-title {
+    text-align: right;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.inner-table {
+    width: 100%;
+}
+
+.inner-table td {
+    width: 33.3%;
+}
+
+.border-top {
+    border-top: 1px solid gray;
+}
+
+

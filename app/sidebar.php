@@ -101,6 +101,13 @@
 						<div class="menu-title">Moja deca</div>
 					</a>
 				</li>
+				<li>
+					<a href="<?php echo $home_url; ?>zbirna_kartica">
+						<div class="parent-icon"><i class='bx bx-wallet'></i>
+						</div>
+						<div class="menu-title">Zbirna finansijska kartica</div>
+					</a>
+				</li>
 
 <?php
 // Ako je u URL-u prisutan djak_id, proveravamo da li stvarno pripada

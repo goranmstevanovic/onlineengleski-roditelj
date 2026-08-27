@@ -19,6 +19,10 @@ date_default_timezone_set($_ENV['APP_TIMEZONE']);
 $site     = $_SERVER['DOCUMENT_ROOT'] . nastavak;
 $home_url = $_ENV['APP_URL'];
 
+// fotografije polaznika — deljeni folder sa avalon-student aplikacijom
+$student_photos_path = $_ENV['STUDENT_PHOTOS_PATH'];
+$student_photos_url  = $_ENV['STUDENT_PHOTOS_URL'];
+
 $super_admin = [1, 104, 132];
 
 // Pagination

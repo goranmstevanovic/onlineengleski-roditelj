@@ -32,15 +32,27 @@ include_once "config/core.php";
 			padding: 20px;
 			height: 100%;
 		}
+		.dete-card .dete-header {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 16px;
+		}
 		.dete-card .dete-ime {
 			font-size: 18px;
 			font-weight: 600;
-			margin-bottom: 4px;
 		}
 		.dete-card .dete-vrsta {
 			font-size: 13px;
 			color: #64748b;
-			margin-bottom: 16px;
+		}
+		.dete-card .dete-foto {
+			width: 56px;
+			height: 56px;
+			flex: 0 0 56px;
+			object-fit: cover;
+			border-radius: 8px;
+			border: 2px solid #e2e8f0;
 		}
 		.dete-card .btn {
 			margin: 3px 4px 3px 0;
@@ -100,12 +112,25 @@ include_once "config/core.php";
 							</div>
 						<?php } else { ?>
 							<p class="text-muted">Vaša deca u školi — izaberite dete za pregled njegovih podataka:</p>
+							<p>
+								<a class="btn btn-sm btn-outline-dark" target="_blank" href="<?php echo $home_url; ?>zbirna_kartica"><i class="bi bi-wallet2"></i> Zbirna finansijska kartica (sva deca)</a>
+							</p>
 							<div class="row g-3">
 								<?php foreach($deca as $dete){ ?>
 									<div class="col-md-4">
 										<div class="dete-card">
-											<div class="dete-ime"><i class="bi bi-person-circle"></i> <?php echo htmlspecialchars(trim($dete['firstname'] . ' ' . $dete['lastname'])); ?></div>
-											<div class="dete-vrsta"><?php echo $dete['djak_status'] == 1 ? 'Aktivan polaznik' : 'Neaktivan'; ?></div>
+											<?php
+											$dete_avatar = (!empty($dete['photo']) && file_exists($student_photos_path . $dete['photo']))
+												? $student_photos_url . $dete['photo']
+												: 'images/avatar.jpg';
+											?>
+											<div class="dete-header">
+												<img class="dete-foto" src="<?php echo $dete_avatar; ?>" alt="">
+												<div>
+													<div class="dete-ime"><?php echo htmlspecialchars(trim($dete['firstname'] . ' ' . $dete['lastname'])); ?></div>
+													<div class="dete-vrsta"><?php echo $dete['djak_status'] == 1 ? 'Aktivan polaznik' : 'Neaktivan'; ?></div>
+												</div>
+											</div>
 											<a class="btn btn-sm btn-outline-primary" target="_blank" href="<?php echo $home_url; ?>dashboard?djak_id=<?php echo $dete['fk_djak']; ?>"><i class="bi bi-task"></i> Zadaci i dokumenti</a>
 											<a class="btn btn-sm btn-outline-primary" target="_blank" href="<?php echo $home_url; ?>kartica_djak?djak_id=<?php echo $dete['fk_djak']; ?>"><i class="bi bi-wallet2"></i> Finansijska kartica</a>
 											<a class="btn btn-sm btn-outline-primary" target="_blank" href="<?php echo $home_url; ?>odrzani_casovi?djak_id=<?php echo $dete['fk_djak']; ?>"><i class="bi bi-calendar-check"></i> Časovi</a>

@@ -179,11 +179,11 @@ foreach($sve_stavke as $stavka){
 											<div class="p-3 rounded-3 bg-light border text-end shadow-sm">
 												<div class="mb-2">
 													<small class="text-muted">Ukupan saldo (sva deca)</small>
-													<h4 class="mb-0 fw-bold"><?php echo number_format((float)$saldo, 2, '.', ' '); ?></h4>
+													<h4 class="mb-0 fw-bold"><?php echo number_format((float)$saldo, 2, '.', ' '); ?> RSD</h4>
 												</div>
 												<div>
 													<small class="text-muted">Današnji saldo</small>
-													<h6 class="mb-0 fw-bold"><?php echo number_format((float)$danasnji_saldo, 2, '.', ' '); ?></h6>
+													<h6 class="mb-0 fw-bold"><?php echo number_format((float)$danasnji_saldo, 2, '.', ' '); ?> RSD</h6>
 												</div>
 											</div>
 										</div>
@@ -229,7 +229,7 @@ foreach($sve_stavke as $stavka){
 															</td>
 															<td><?php echo $red['datum_prikaz']; ?></td>
 															<td>
-																<?php echo $red['iznos']; ?>
+																<?php echo number_format((float)$red['iznos'], 2, '.', ' '); ?> RSD
 																<?php if($red['racun']){ ?><b style="color:red;"> &nbsp;rač.</b><?php } ?>
 																<?php if(!empty($red['broj_priznanice'])){ ?><br><b style="color:purple;">&nbsp;Br.priz. <?php echo htmlspecialchars($red['broj_priznanice']); ?></b><?php } ?>
 															</td>
@@ -240,12 +240,12 @@ foreach($sve_stavke as $stavka){
 															</td>
 															<td><?php echo $red['datum_prikaz']; ?><br><small class="text-muted"><?php echo htmlspecialchars($red['grupa_prikaz']); ?></small></td>
 															<td style="color:red;">
-																<?php echo number_format((float)$red['iznos'], 2, '.', ''); ?>
+																<?php echo number_format((float)$red['iznos'], 2, '.', ' '); ?> RSD
 																<?php if(!empty($red['popust'])){ ?><small class="text-warning fw-bold"> -<?php echo $red['popust']; ?>%</small><?php } ?>
 															</td>
 														<?php } ?>
 														<td<?php if($red['saldo_tekuci'] < 0){ echo ' style="color:red;"'; } ?>>
-															<?php echo number_format((float)$red['saldo_tekuci'], 2, '.', ''); ?>
+															<?php echo number_format((float)$red['saldo_tekuci'], 2, '.', ' '); ?> RSD
 														</td>
 													</tr>
 												<?php } ?>

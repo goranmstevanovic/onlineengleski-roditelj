@@ -8,7 +8,7 @@ include_once "config/autoload.php";
 include_once "config/resolve_djak.php";
 ?>
 <!doctype html>
-<!-- <html lang="en"> -->
+<html lang="sr">
 
 <head>
 	<!-- Required meta tags -->
@@ -34,7 +34,7 @@ include_once "config/resolve_djak.php";
 	<link rel="stylesheet" href="assets/css/dark-theme.css"/>
 	<link rel="stylesheet" href="assets/css/semi-dark.css"/>
 	<link rel="stylesheet" href="assets/css/header-colors.css"/>
-	<title>SMS</title>
+	<title>SMS - Zaduženja</title>
 	<style>
 .page-content .row {
     display: flex !important;
@@ -219,20 +219,6 @@ foreach ($kartica as $k) {
 // =============================
 krsort($meseci);
 ?>
-<!doctype html>
-<html lang="sr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-<script src="assets/js/bootstrap.bundle.min.js"></script> -->
-
-<title>Zaduženja</title>
-</head>
-
-<body>
-
 <div class="container mt-3">
 
 <h5 class="mb-3"><u>Zaduženja (6 meseci)</u></h5>
@@ -334,11 +320,6 @@ modal.show();
 });
 });
 </script>
-
-</body>
-</html>
-
-
 
 
 

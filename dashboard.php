@@ -569,14 +569,14 @@ include_once "config/resolve_djak.php";
 														<div class="mt-3 d-flex gap-2 flex-wrap">
 
 															<?php if($d['pravo_pregled']){ ?>
-																<a href="download_dokument.php?id=<?= $d['id'] ?>"
+																<a href="download_dokument.php?id=<?= $d['id'] ?>&djak_id=<?= (int)$moj_id ?>"
 																class="btn btn-outline-primary btn-sm"><i class='bx bx-show'></i>
 																	Vidi
 																</a>
 															<?php } ?>
 
 															<?php if($d['pravo_download']){ ?>
-																<a href="download_dokument.php?id=<?= $d['id'] ?>" style="display:none"
+																<a href="download_dokument.php?id=<?= $d['id'] ?>&djak_id=<?= (int)$moj_id ?>" style="display:none"
 																class="btn btn-success btn-sm">
 																	Download
 																</a>

@@ -1,21 +1,3 @@
-<html>
-<head>
-    <title> Kartica djak </title>
-   
-    <link rel="stylesheet" type="text/css" href="tigrakal/tcal.css" />
-    <script type="text/javascript" src="tigrakal/tcal.js"></script>
-   <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script> 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  -->
-    <script src="ajax/ajax321jquery.min.js"></script>
-    <script type="ajax/jquery15.min.js"></script> 
-	<style>
-		a,a label {
-		cursor: pointer;
-	}
-	</style>
-</head>
-<body>
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -612,15 +594,3 @@ $('textarea').each(function () {
             echo "</div>";
             
         } ?>
-
-
-<?php
-
-// include page footer HTML
-include_once "layout_foot1.php";
-?>
-
-
-
-</body>
-</html>

@@ -102,7 +102,8 @@ class duzina_casa
                 FROM
                     " . $this->table_name . "
                 WHERE
-				`duzina` = $duzina 
+				`duzina` = $duzina AND active = 1
+                ORDER BY id
                 ";
 
         $stmt = $this->conn->prepare( $query );

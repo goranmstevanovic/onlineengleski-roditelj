@@ -98,8 +98,11 @@ try {
     $mail->isHTML(true);
     $mail->Subject = 'Verifikacija email adrese';
 
+    $posiljalac_html = htmlspecialchars(POSILJALAC);
+    $potpis_html     = mail_potpis_html();
+
     $mail->Body = "
-        <h2>SMS System</h2>
+        <h2>{$posiljalac_html}</h2>
 
         <p>Pozdrav {$user['firstname']},</p>
 
@@ -122,7 +125,7 @@ try {
         </p>
 
         <hr>
-        <small>SMS System</small>
+        <small>{$potpis_html}</small>
     ";
 
     error_log("Pokusaj slanja maila na: " . $user['email']);

@@ -7,5 +7,5 @@ return [
     'port'       => (int) $_ENV['MAIL_PORT'],
     'encryption' => $_ENV['MAIL_ENCRYPTION'],
     'from_email' => $_ENV['MAIL_FROM_EMAIL'],
-    'from_name'  => $_ENV['MAIL_FROM_NAME'],
+    'from_name'  => POSILJALAC,
 ];

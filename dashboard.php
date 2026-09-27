@@ -305,11 +305,49 @@ include_once "config/resolve_djak.php";
 					$domaci_wordwall_lista = $domaci_wordwall_obj->read_visible_for_djak($moj_id)->fetchAll(PDO::FETCH_ASSOC);
 					// ===================== KRAJ DOMAĆI WORDWALL logike =====================
 
-					// Kvizovi namerno van scope-a avalon-roditelj (videti belesku iznad kod
-					// uklonjenih POST akcija) - prazna lista znaci da $otvoreni_kviz ispod
-					// nikad ne pronalazi poklapanje, pa se "resavanje kviza" UI nikad ne
-					// aktivira (vidi se dalje u fajlu, uslov ostaje netaknut ali nedostizan)
-					$kvizovi_lista = [];
+					// Roditelj vidi kvizove samo za citanje: lista sa statusom i rezultat zavrsenih pokusaja (bez pokretanja/predaje)
+					// Lista kvizova vidljivih djaku, sa statusom (u toku / zavrsen / istekao rok / moze pokusaj)
+					$kvizovi_lista = $kviz_obj->read_visible_for_djak($moj_id)->fetchAll(PDO::FETCH_ASSOC);
+
+					foreach ($kvizovi_lista as &$kv) {
+						$kv['broj_pitanja'] = $pitanje_obj->read_by_kviz($kv['id'])->rowCount();
+
+						$kv['u_toku'] = null;
+						$kv['zavrseni'] = [];
+
+						foreach ($kviz_pokusaj_obj->read_by_kviz_djak($kv['id'], $moj_id)->fetchAll(PDO::FETCH_ASSOC) as $p) {
+							if ($p['finished_at'] === null) {
+								$kv['u_toku'] = $p;
+							} else {
+								$kv['zavrseni'][] = $p;
+							}
+						}
+
+						$kv['rok_istekao'] = !empty($kv['rok']) && strtotime($kv['rok']) < time();
+						$kv['moze_pokusaj'] = !$kv['rok_istekao'] && !$kv['u_toku'] && count($kv['zavrseni']) < (int)$kv['broj_pokusaja'];
+					}
+					unset($kv);
+
+					// Sortiranje: prvo kvizovi koji se jos mogu resavati (u toku ili ima preostalih pokusaja, a rok nije istekao),
+					// zatim oni koji se vise ne mogu resavati (rok istekao ili iskoriscen broj pokusaja);
+					// u okviru obe grupe - po roku opadajuce (bez roka = najdalje u buducnosti) i id-u opadajuce
+					usort($kvizovi_lista, function ($a, $b) {
+						$a_moze = !$a['rok_istekao'] && ($a['u_toku'] || count($a['zavrseni']) < (int)$a['broj_pokusaja']);
+						$b_moze = !$b['rok_istekao'] && ($b['u_toku'] || count($b['zavrseni']) < (int)$b['broj_pokusaja']);
+
+						if ($a_moze !== $b_moze) {
+							return $a_moze ? -1 : 1;
+						}
+
+						$a_rok = $a['rok'] ?: '9999-12-31 23:59:59';
+						$b_rok = $b['rok'] ?: '9999-12-31 23:59:59';
+
+						if ($a_rok !== $b_rok) {
+							return $a_rok < $b_rok ? 1 : -1;
+						}
+
+						return $b['id'] - $a['id'];
+					});
 
 					// Detalji otvorenog kviza - forma za resavanje (ako je pokusaj u toku) ili rezultat poslednjeg zavrsenog pokusaja
 					$otvoreni_kviz = null;
@@ -329,30 +367,7 @@ include_once "config/resolve_djak.php";
 
 						if ($otvoreni_kviz) {
 
-							if ($otvoreni_kviz['u_toku']) {
-
-								$pokusaj = $otvoreni_kviz['u_toku'];
-
-								// ako je vremensko ogranicenje isteklo, automatski predaj (neodgovoreno = netacno) i prikazi rezultat
-								if (!empty($otvoreni_kviz['vreme_ogranicenje_min'])) {
-									$istek = strtotime($pokusaj['started_at']) + ((int)$otvoreni_kviz['vreme_ogranicenje_min'] * 60);
-
-									if (time() >= $istek) {
-										kviz_oceni_i_zavrsi($pitanje_obj, $odgovor_obj, $kviz_odgovor_obj, $kviz_pokusaj_obj, $pokusaj['id'], $otvoreni_kviz_id, []);
-										header("Location: index.php?tab=kviz&kviz=" . $otvoreni_kviz_id . "#tab-kviz");
-										exit;
-									}
-								}
-
-								$otvoreni_pokusaj = $pokusaj;
-								$otvoreni_pitanja = $pitanje_obj->read_by_kviz($otvoreni_kviz_id)->fetchAll(PDO::FETCH_ASSOC);
-
-								foreach ($otvoreni_pitanja as &$op) {
-									$op['odgovori'] = $odgovor_obj->read_by_pitanje($op['id'])->fetchAll(PDO::FETCH_ASSOC);
-								}
-								unset($op);
-
-							} elseif (!empty($otvoreni_kviz['zavrseni'])) {
+							if (!empty($otvoreni_kviz['zavrseni'])) {
 
 								$otvoreni_pokusaj = $otvoreni_kviz['zavrseni'][0];
 								$otvoreni_rezultat = $kviz_odgovor_obj->read_by_pokusaj($otvoreni_pokusaj['id'])->fetchAll(PDO::FETCH_ASSOC);
@@ -690,7 +705,136 @@ include_once "config/resolve_djak.php";
 
 								<!-- (mrtav legacy kod iz avalon-student, if(false) blok od audio/esej/video/wordwall po-tipu prikaza - uklonjen, zamenjen unifikovanom listom nize u fajlu) -->
 
-								<?php if ($otvoreni_kviz && $otvoreni_pokusaj && $otvoreni_kviz['u_toku']) { /* uzimanje/pregled kviza namerno uklonjeno iz avalon-roditelj - kvizovi_lista je uvek prazna pa ovaj uslov nikad nije tacan, ostavljeno radi balansa if/else strukture */ } else { ?>
+								<?php if ($otvoreni_kviz && $otvoreni_rezultat !== null) {
+
+									$procenat = $otvoreni_pokusaj['procenat'];
+									$boja_alert = $procenat >= 50 ? 'alert-success' : 'alert-danger';
+								?>
+
+									<!-- REZULTAT POSLEDNJEG POKUSAJA -->
+									<div class="card shadow-sm border-0 mb-3">
+										<div class="card-body">
+											<h5><?= htmlspecialchars($otvoreni_kviz['naziv']) ?></h5>
+											<div class="alert <?= $boja_alert ?> mt-2 mb-0">
+												Rezultat: <strong><?= (int)$otvoreni_pokusaj['bodovi'] ?> / <?= (int)$otvoreni_pokusaj['max_bodovi'] ?></strong> poena
+												(<?= $procenat ?>%)
+											</div>
+										</div>
+									</div>
+
+									<?php if ($otvoreni_kviz['prikazi_odgovore']) { ?>
+										<?php foreach ($otvoreni_rezultat_grupisano as $i => $g) { ?>
+											<?php if ($g['tip_pitanja'] === 'dopuna') {
+												$svi_tacni = true;
+												foreach ($g['stavke'] as $s) {
+													if (!$s['tacan']) { $svi_tacni = false; break; }
+												}
+											?>
+												<div class="card shadow-sm border-0 mb-2 <?= $svi_tacni ? 'border-start border-success border-3' : 'border-start border-danger border-3' ?>">
+													<div class="card-body">
+														<strong>Pitanje <?= $i + 1 ?>.</strong>
+
+														<?php if (kviz_ima_oznake_praznina($g['tekst_pitanja'])) {
+															$dopuna_prikaz_blanks = [];
+															foreach ($g['stavke'] as $bi => $s) {
+																$dopuna_prikaz_blanks[$bi] = '<span class="badge bg-secondary">' . ($bi + 1) . '</span> <span class="' . ($s['tacan'] ? 'text-success fw-bold' : 'text-danger fw-bold text-decoration-underline') . '">'
+																	. (($s['unet_tekst'] !== null && trim($s['unet_tekst']) !== '') ? htmlspecialchars($s['unet_tekst']) : '—')
+																	. '</span>';
+															}
+															echo kviz_render_tekst_sa_oznakama($g['tekst_pitanja'], $dopuna_prikaz_blanks);
+														} else {
+															echo nl2br(htmlspecialchars($g['tekst_pitanja']));
+														} ?>
+
+														<?php foreach ($g['stavke'] as $bi => $s) {
+															$tacan_prikaz = trim(explode('|', (string)$s['tekst_odgovora'])[0]);
+														?>
+															<div class="mt-2">
+																Dopuna <?= $bi + 1 ?>:
+																<?php if ($s['unet_tekst'] !== null && trim($s['unet_tekst']) !== '') { ?>
+																	<?= htmlspecialchars($s['unet_tekst']) ?>
+																<?php } else { ?>
+																	<em>(nije odgovoreno)</em>
+																<?php } ?>
+																<?= $s['tacan'] ? "<span class='text-success'>&#10003;</span>" : "<span class='text-danger'>&#10007;</span>" ?>
+																<span class="badge bg-secondary"><?= $s['tacan'] ? (int)$s['odgovor_poeni'] : 0 ?> / <?= (int)$s['odgovor_poeni'] ?> <?= ((int)$s['odgovor_poeni'] === 1) ? 'poen' : 'poena' ?></span>
+																<?php if (!$s['tacan']) { ?>
+																	<div class="text-success">Tačan odgovor: <?= htmlspecialchars($tacan_prikaz) ?></div>
+																<?php } ?>
+															</div>
+														<?php } ?>
+													</div>
+												</div>
+											<?php } elseif ($g['tip_pitanja'] === 'spajanje') {
+												$svi_tacni = true;
+												foreach ($g['stavke'] as $s) {
+													if ($s['odgovor_tacan_broj'] !== null && !$s['tacan']) { $svi_tacni = false; break; }
+												}
+											?>
+												<div class="card shadow-sm border-0 mb-2 <?= $svi_tacni ? 'border-start border-success border-3' : 'border-start border-danger border-3' ?>">
+													<div class="card-body">
+														<strong>Pitanje <?= $i + 1 ?>.</strong>
+
+														<?php if (kviz_ima_oznake_praznina($g['tekst_pitanja'])) {
+															$spajanje_prikaz_blanks = [];
+															for ($n = 1; $n <= 5; $n++) {
+																$spajanje_prikaz_blanks[$n - 1] = '<span class="badge bg-secondary">' . $n . '</span><span class="text-decoration-underline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+															}
+															echo kviz_render_tekst_sa_oznakama($g['tekst_pitanja'], $spajanje_prikaz_blanks);
+														} else {
+															echo nl2br(htmlspecialchars($g['tekst_pitanja']));
+														} ?>
+
+														<?php foreach ($g['stavke'] as $s) { ?>
+															<div class="mt-2">
+																<?= htmlspecialchars($s['tekst_odgovora']) ?> &rarr;
+																<?php if ($s['unet_tekst'] !== null && trim($s['unet_tekst']) !== '') { ?>
+																	<strong><?= htmlspecialchars($s['unet_tekst']) ?></strong>
+																<?php } else { ?>
+																	<em>(nije povezano)</em>
+																<?php } ?>
+																<?php if ($s['odgovor_tacan_broj'] !== null) { ?>
+																	<?= $s['tacan'] ? "<span class='text-success'>&#10003;</span>" : "<span class='text-danger'>&#10007;</span>" ?>
+																	<span class="badge bg-secondary"><?= $s['tacan'] ? (int)$s['odgovor_poeni'] : 0 ?> / <?= (int)$s['odgovor_poeni'] ?> <?= ((int)$s['odgovor_poeni'] === 1) ? 'poen' : 'poena' ?></span>
+																	<?php if (!$s['tacan']) { ?>
+																		<span class="text-success">Tačan broj: <?= (int)$s['odgovor_tacan_broj'] ?></span>
+																	<?php } ?>
+																<?php } else { ?>
+																	<span class="text-muted">(mamac)</span>
+																<?php } ?>
+															</div>
+														<?php } ?>
+													</div>
+												</div>
+											<?php } else {
+												$r = $g['stavke'][0];
+											?>
+												<div class="card shadow-sm border-0 mb-2 <?= $r['tacan'] ? 'border-start border-success border-3' : 'border-start border-danger border-3' ?>">
+													<div class="card-body">
+														<strong>Pitanje <?= $i + 1 ?>.</strong> <?= nl2br(htmlspecialchars($r['tekst_pitanja'])) ?>
+														<div class="mt-2">
+															Odgovor:
+															<?php if ($r['tekst_odgovora']) { ?>
+																<?= htmlspecialchars($r['tekst_odgovora']) ?>
+															<?php } else { ?>
+																<em>(nije odgovoreno)</em>
+															<?php } ?>
+															<?= $r['tacan'] ? "<span class='text-success'>&#10003;</span>" : "<span class='text-danger'>&#10007;</span>" ?>
+														</div>
+														<?php if (!$r['tacan']) { ?>
+															<div class="text-success">Tačan odgovor: <?= htmlspecialchars($r['tacan_tekst']) ?></div>
+														<?php } ?>
+													</div>
+												</div>
+											<?php } ?>
+										<?php } ?>
+									<?php } ?>
+
+									<div class="mt-3 d-flex gap-2 flex-wrap">
+										<a href="dashboard.php?djak_id=<?= (int)$moj_id ?>&tab=kviz#tab-kviz" class="btn btn-outline-secondary"><i class='bx bx-arrow-back'></i> Nazad na listu kvizova</a>
+									</div>
+
+								<?php } else { ?>
 
 									<?php if (empty($domaci_sve)): ?>
 										<div class="alert alert-info">Nema domaćih zadataka.</div>
@@ -1066,23 +1210,16 @@ include_once "config/resolve_djak.php";
 															🔁 Pokušaji: <?= count($kv['zavrseni']) ?> / <?= (int)$kv['broj_pokusaja'] ?>
 														</div>
 														<div class="mt-3">
-															<?php if ($kv['u_toku']) { ?>
-																<a href="index.php?tab=kviz&kviz=<?= (int)$kv['id'] ?>#tab-kviz" class="btn btn-warning btn-sm">
-																	<i class='bx bx-play-circle'></i> Nastavi kviz
-																</a>
-															<?php } elseif ($kv['moze_pokusaj']) { ?>
-																<form method="post">
-																	<input type="hidden" name="kviz_action" value="pokreni">
-																	<input type="hidden" name="kviz_id" value="<?= (int)$kv['id'] ?>">
-																	<button type="submit" class="btn btn-primary btn-sm">
-																		<i class='bx bx-help-circle'></i> Pokreni kviz
-																	</button>
-																</form>
-															<?php } elseif (!empty($kv['zavrseni'])) { ?>
-																<a href="index.php?tab=kviz&kviz=<?= (int)$kv['id'] ?>#tab-kviz" class="btn btn-outline-secondary btn-sm">
+															<?php if (!empty($kv['zavrseni'])) { ?>
+																<a href="dashboard.php?djak_id=<?= (int)$moj_id ?>&tab=kviz&kviz=<?= (int)$kv['id'] ?>#tab-kviz" class="btn btn-outline-secondary btn-sm">
 																	<i class='bx bx-bar-chart-alt-2'></i> Pregled rezultata
 																</a>
-															<?php } else { ?>
+															<?php } ?>
+															<?php if ($kv['u_toku']) { ?>
+																<span class="badge bg-warning text-dark">U toku</span>
+															<?php } elseif ($kv['moze_pokusaj']) { ?>
+																<span class="badge bg-info text-dark">Nije urađen</span>
+															<?php } elseif (empty($kv['zavrseni'])) { ?>
 																<span class="badge bg-secondary">Rok istekao</span>
 															<?php } ?>
 														</div>

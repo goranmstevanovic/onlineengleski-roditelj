@@ -49,16 +49,25 @@ function mail_potpis_html(): string
     return implode('<br>', $redovi);
 }
 
-// Logo na vrhu HTML mejla: ugradjuje MAIL_LOGO u sam mejl (cid), pa ne zavisi od domena
-// i prikazuje se bez "prikazi slike". Prazno ako logo nije podesen.
+// Logo na vrhu HTML mejla. MAIL_LOGO moze biti URL (http/https - slika se ucitava sa te
+// adrese) ili putanja do fajla od root foldera (ugradjuje se u sam mejl (cid), pa ne zavisi
+// od domena i prikazuje se bez "prikazi slike"). Prazno ako logo nije podesen ili fajl ne postoji.
 function mail_logo_html($mailer): string
 {
-    $fajl = dirname(__DIR__) . '/' . ltrim(MAIL_LOGO, '/');
-    if (MAIL_LOGO === '' || !is_file($fajl)) {
+    if (MAIL_LOGO === '') {
         return '';
     }
-    $mailer->addEmbeddedImage($fajl, 'mail_logo');
-    return "<p align='center'><img width='180' src='cid:mail_logo' alt='" . htmlspecialchars(POSILJALAC) . "'></p>";
+    if (preg_match('#^https?://#i', MAIL_LOGO)) {
+        $src = htmlspecialchars(MAIL_LOGO);
+    } else {
+        $fajl = dirname(__DIR__) . '/' . ltrim(MAIL_LOGO, '/');
+        if (!is_file($fajl)) {
+            return '';
+        }
+        $mailer->addEmbeddedImage($fajl, 'mail_logo');
+        $src = 'cid:mail_logo';
+    }
+    return "<p align='center'><img width='180' src='" . $src . "' alt='" . htmlspecialchars(POSILJALAC) . "'></p>";
 }
 
 // fotografije polaznika — deljeni folder sa avalon-student aplikacijom

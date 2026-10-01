@@ -77,8 +77,10 @@ try {
 
     $posiljalac_html = htmlspecialchars(POSILJALAC);
     $potpis_html     = mail_potpis_html();
+    $logo_html       = mail_logo_html($mail);
 
     $mail->Body = "
+        {$logo_html}
         <h2>{$posiljalac_html}</h2>
         <p>Pozdrav {$user['firstname']},</p>
         <p>Kliknite ispod da resetujete lozinku:</p>

@@ -24,6 +24,8 @@ define('POSILJALAC',     $_ENV['MAIL_POSILJALAC'] ?? '');
 define('POTPISNIK',      $_ENV['MAIL_POTPISNIK'] ?? '');
 define('POTPIS_TELEFON', $_ENV['MAIL_POTPIS_TELEFON'] ?? '');
 define('POTPIS_SAJT',    $_ENV['MAIL_POTPIS_SAJT'] ?? '');
+// putanja do loga za mejl, relativno od root foldera aplikacije (prazno = bez loga)
+define('MAIL_LOGO',      $_ENV['MAIL_LOGO'] ?? 'images/mail_logo.png');
 
 // Potpis za kraj mejla (tekst): potpisnik, pa telefon i sajt ako su popunjeni — svaki u svom redu
 function mail_potpis(): string
@@ -45,6 +47,18 @@ function mail_potpis_html(): string
         POTPIS_SAJT !== '' ? '<a href="' . htmlspecialchars(POTPIS_SAJT) . '">' . htmlspecialchars(POTPIS_SAJT) . '</a>' : '',
     ], 'strlen');
     return implode('<br>', $redovi);
+}
+
+// Logo na vrhu HTML mejla: ugradjuje MAIL_LOGO u sam mejl (cid), pa ne zavisi od domena
+// i prikazuje se bez "prikazi slike". Prazno ako logo nije podesen.
+function mail_logo_html($mailer): string
+{
+    $fajl = dirname(__DIR__) . '/' . ltrim(MAIL_LOGO, '/');
+    if (MAIL_LOGO === '' || !is_file($fajl)) {
+        return '';
+    }
+    $mailer->addEmbeddedImage($fajl, 'mail_logo');
+    return "<p align='center'><img width='180' src='cid:mail_logo' alt='" . htmlspecialchars(POSILJALAC) . "'></p>";
 }
 
 // fotografije polaznika — deljeni folder sa avalon-student aplikacijom

@@ -28,6 +28,7 @@ error.log
 
 # User uploads / runtime storage (osetljivi podaci učenika)
 /storage/
+/assets/uploads/
 
 # Backup fajlovi sa datumom u zagradi (npr. "objects/uplata (09-Oct-21).php")
 *(*).php

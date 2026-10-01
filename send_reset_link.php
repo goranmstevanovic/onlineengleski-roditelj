@@ -80,7 +80,7 @@ try {
 
     $mail->Body = "
         <h2>{$posiljalac_html}</h2>
-        <p>Zdravo {$user['firstname']},</p>
+        <p>Pozdrav {$user['firstname']},</p>
         <p>Kliknite ispod da resetujete lozinku:</p>
         <p>
             <a href='{$link}' style='background:#dc3545;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;'>

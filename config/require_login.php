@@ -8,9 +8,7 @@
  *   include_once __DIR__ . '/config/require_login.php';
  */
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/sesija.php';
 
 if (empty($_SESSION['logged_in'])
     || empty($_SESSION['user_id'])

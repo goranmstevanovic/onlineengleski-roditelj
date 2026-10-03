@@ -34,6 +34,9 @@ if(!$row){
     die("<div class='alert alert-danger'>Korisnik ne postoji.</div>");
 }
 
+// hash u bazi moze imati razmak na kraju (kao i kod prijave)
+$row['password'] = trim($row['password']);
+
 if(!password_verify($current, $row['password'])){
     die("<div class='alert alert-danger'>Trenutna lozinka nije tačna.</div>");
 }

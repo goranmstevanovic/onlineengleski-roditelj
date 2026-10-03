@@ -11,17 +11,26 @@ $id = $_SESSION['user_id'];
 
         <div class="col-md-4 mb-3">
             <label>Trenutna lozinka</label>
-            <input type="password" name="current_password" class="form-control" required>
+            <div class="input-group">
+                <input type="password" name="current_password" class="form-control" required>
+                <button type="button" class="btn btn-outline-secondary toggle-lozinka" tabindex="-1" title="Prikazi lozinku"><i class="bi bi-eye"></i></button>
+            </div>
         </div>
 
         <div class="col-md-4 mb-3">
             <label>Nova lozinka</label>
-            <input type="password" name="new_password" class="form-control" required>
+            <div class="input-group">
+                <input type="password" name="new_password" class="form-control" required>
+                <button type="button" class="btn btn-outline-secondary toggle-lozinka" tabindex="-1" title="Prikazi lozinku"><i class="bi bi-eye"></i></button>
+            </div>
         </div>
 
         <div class="col-md-4 mb-3">
             <label>Ponovi lozinku</label>
-            <input type="password" name="confirm_password" class="form-control" required>
+            <div class="input-group">
+                <input type="password" name="confirm_password" class="form-control" required>
+                <button type="button" class="btn btn-outline-secondary toggle-lozinka" tabindex="-1" title="Prikazi lozinku"><i class="bi bi-eye"></i></button>
+            </div>
         </div>
 
         <div class="col-12 text-end">
@@ -35,6 +44,16 @@ $id = $_SESSION['user_id'];
 </form>
 
 <script>
+document.querySelectorAll(".toggle-lozinka").forEach(function(btn){
+    btn.addEventListener("click", function(){
+        const input = this.parentNode.querySelector("input");
+        const icon = this.querySelector("i");
+        const skriveno = input.type === "password";
+        input.type = skriveno ? "text" : "password";
+        icon.className = skriveno ? "bi bi-eye-slash" : "bi bi-eye";
+    });
+});
+
 document.getElementById("changePasswordForm").addEventListener("submit", function(e){
     e.preventDefault();
 

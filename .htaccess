@@ -13,6 +13,8 @@ RewriteEngine On
 </FilesMatch>
 
 RewriteRule ^\.git(/.*)?$ - [F,L]
+# .claude/ = radni folder Claude Code-a (stare kopije koda) - nikad sa weba; RedirectMatch vazi i kad podfolder ima svoj .htaccess
+RedirectMatch 403 /\.claude(/|$)
 
 <FilesMatch "^composer\.(json|lock|phar)$">
     <IfModule mod_authz_core.c>

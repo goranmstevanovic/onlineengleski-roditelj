@@ -16,6 +16,20 @@ $sesija_tip   = 'roditelj';
 $sesija_skola = (string) ($_ENV['DB_NAME'] ?? '');
 
 if (session_status() === PHP_SESSION_NONE) {
+    // Kolacic sesije: JavaScript ne moze da ga procita (HttpOnly), ne salje se uz zahteve
+    // sa drugih sajtova (SameSite=Lax), a kad sajt radi na HTTPS-u ide samo preko HTTPS-a (Secure).
+    $sesija_https = strpos((string) ($_ENV['APP_URL'] ?? ''), 'https://') === 0
+        || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'secure'   => $sesija_https,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    // ne prihvata ID sesije koji server nije sam napravio (zastita od podmetanja sesije)
+    ini_set('session.use_strict_mode', '1');
     $sesija_ime = !empty($_ENV['SESSION_NAME']) ? $_ENV['SESSION_NAME'] : 'SMS' . $sesija_skola . $sesija_tip;
     session_name(preg_replace('/[^A-Za-z0-9]/', '', (string) $sesija_ime));
     session_start();

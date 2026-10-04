@@ -908,7 +908,7 @@ include_once "config/resolve_djak.php";
 															<div class="mt-2">
 																<small class="text-muted d-block mb-1">Uputstvo profesora:</small>
 																<audio controls class="w-100" style="height:36px;" data-domaci-id="<?= (int)$da['id'] ?>" onplay="oznaci_slusano(this)">
-																	<source src="serve_domaci_audio.php?file=<?= urlencode($da['audio_filename']) ?>&tip=profesor" type="<?= htmlspecialchars($da['mime_type']) ?>">
+																	<source src="serve_domaci_audio.php?file=<?= urlencode($da['audio_filename']) ?>&tip=profesor&djak_id=<?= (int)$moj_id ?>" type="<?= htmlspecialchars($da['mime_type']) ?>">
 																</audio>
 															</div>
 														<?php endif; ?>
@@ -916,7 +916,7 @@ include_once "config/resolve_djak.php";
 															<div class="mt-2">
 																<small class="text-muted d-block mb-1">Vaš odgovor (poslan <?= date('d.m.Y', strtotime($da['poslato_at'])) ?>):</small>
 																<audio controls class="w-100" style="height:36px;">
-																	<source src="serve_domaci_audio.php?file=<?= urlencode($da['odgovor_filename']) ?>&tip=djaci" type="<?= htmlspecialchars($da['odgovor_mime']) ?>">
+																	<source src="serve_domaci_audio.php?file=<?= urlencode($da['odgovor_filename']) ?>&tip=djaci&djak_id=<?= (int)$moj_id ?>" type="<?= htmlspecialchars($da['odgovor_mime']) ?>">
 																</audio>
 															</div>
 														<?php endif; ?>

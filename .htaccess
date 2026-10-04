@@ -14,7 +14,9 @@ RewriteEngine On
 
 RewriteRule ^\.git(/.*)?$ - [F,L]
 # .claude/ = radni folder Claude Code-a (stare kopije koda) - nikad sa weba; RedirectMatch vazi i kad podfolder ima svoj .htaccess
-RedirectMatch 403 /\.claude(/|$)
+# Svaki folder/fajl cije ime pocinje tackom (.claude, .git, .history, .vscode, ...) zabranjen sa weba,
+# osim .well-known/ (hosting ga koristi za SSL sertifikat).
+RedirectMatch 403 /\.(?!well-known(/|$))
 
 <FilesMatch "^composer\.(json|lock|phar)$">
     <IfModule mod_authz_core.c>

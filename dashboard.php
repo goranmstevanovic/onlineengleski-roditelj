@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // VAZNO: provera vlasnistva nad detetom (?djak_id=) MORA ovde, pre bilo kakvog
 // HTML izlaza - videti config/resolve_djak.php i belesku u kartica_djak.php
 include_once "config/core.php";

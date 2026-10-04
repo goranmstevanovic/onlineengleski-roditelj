@@ -1,3 +1,8 @@
+<?php
+// Izlaz se drzi u baferu dok PHP ispod ne pokrene sesiju i ne posalje zaglavlja -
+// HTML <head> ispod se ispisuje pre PHP koda, a sesija mora da krene pre bilo kakvog ispisa.
+ob_start();
+?>
 <head>
     <link rel="shortcut icon" href="images/kalen.png">
     <title>Roditelj Login</title>
@@ -136,8 +141,6 @@ body {
 </head>
 
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include_once "config/core.php";

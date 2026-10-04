@@ -17,6 +17,9 @@ RewriteRule ^\.git(/.*)?$ - [F,L]
 # Svaki folder/fajl cije ime pocinje tackom (.claude, .git, .history, .vscode, ...) zabranjen sa weba,
 # osim .well-known/ (hosting ga koristi za SSL sertifikat).
 RedirectMatch 403 /\.(?!well-known(/|$))
+# config/ i vendor/ se samo ukljucuju iz PHP-a, nikad se ne pozivaju iz pregledaca
+RewriteRule ^config(/.*)?$ - [F,L]
+RewriteRule ^vendor(/.*)?$ - [F,L]
 
 <FilesMatch "^composer\.(json|lock|phar)$">
     <IfModule mod_authz_core.c>

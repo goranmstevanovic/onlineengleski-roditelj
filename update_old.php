@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/config/require_login.php'; // samo prijavljeni korisnici ?>
 <?php
 $id = $_SESSION['user_id'];
 

@@ -74,8 +74,8 @@ try {
     $mail->Subject = 'Reset lozinke';
 
     $mail->Body = "
-        <h2>SMS System</h2>
-        <p>Poštovani {$user['firstname']},</p>
+        <h2>Online Engleski</h2>
+        <p>Zdravo {$user['firstname']},</p>
         <p>Kliknite ispod da resetujete lozinku:</p>
         <p>
             <a href='{$link}' style='background:#dc3545;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;'>

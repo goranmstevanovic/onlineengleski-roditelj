@@ -16,7 +16,7 @@ if($action){
 }
 
 echo "<div class='account-wall'>";
-echo "<img style='width:80%; margin-left:10%;' src='images/sms1.png'>";
+echo "<img style='width:50%; margin-left:25%;' src='images/sms1.png'>";
 
 echo "<form method='POST' action='send_reset_link.php' class='form-signin'>";
 

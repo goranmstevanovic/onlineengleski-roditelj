@@ -101,7 +101,7 @@ try {
     $mail->Body = "
         <h2>SMS System</h2>
 
-        <p>Poštovani {$user['firstname']},</p>
+        <p>Pozdrav {$user['firstname']},</p>
 
         <p>Da biste aktivirali svoj roditeljski nalog, potrebno je da verifikujete email adresu.</p>
 

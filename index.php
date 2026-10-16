@@ -88,7 +88,7 @@ include_once "config/core.php";
 				$roditelj_djak = new roditelj_djak($db);
 				$moj_id = $_SESSION['user_id'];
 
-				$stmt_deca = $roditelj_djak->read_all_djaci_za_roditelja($moj_id);
+				$stmt_deca = $roditelj_djak->read_all_djaci_za_roditelja($moj_id, true);
 				$deca = $stmt_deca->fetchAll(PDO::FETCH_ASSOC);
 
 				$action = $_GET['action'] ?? '';

@@ -129,7 +129,8 @@ class roditelj_djak
     }
 
     // sva deca za jednog roditelja - osnova za avalon-roditelj ("moja deca u skoli")
-    function read_all_djaci_za_roditelja($fk_roditelj)
+    // $bez_kandidata = true: bez djaka sa statusom 2 (kandidat iz lida) - roditeljska app ih ne prikazuje
+    function read_all_djaci_za_roditelja($fk_roditelj, $bez_kandidata = false)
     {
         $query = "SELECT rd.*, dj.firstname, dj.lastname, dj.status AS djak_status,
                     dj.photo, vr.ime AS vrsta_ime
@@ -137,6 +138,7 @@ class roditelj_djak
                 INNER JOIN djaci dj ON dj.id = rd.fk_djak
                 LEFT JOIN vrste_roditelja vr ON vr.id = rd.fk_vrsta_roditelja
                 WHERE rd.active = 1 AND rd.fk_roditelj = :fk_roditelj
+                " . ($bez_kandidata ? "AND dj.status != 2" : "") . "
                 ORDER BY dj.firstname ASC, dj.lastname ASC";
 
         $stmt = $this->conn->prepare($query);
